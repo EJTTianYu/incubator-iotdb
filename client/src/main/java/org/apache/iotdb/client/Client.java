@@ -31,6 +31,7 @@ import org.apache.commons.cli.ParseException;
 import org.apache.iotdb.exception.ArgsErrorException;
 import org.apache.iotdb.jdbc.Config;
 import org.apache.iotdb.jdbc.IoTDBConnection;
+import org.apache.iotdb.tsfile.tool.update.UpdateTool;
 import org.apache.thrift.TException;
 
 /**
@@ -65,6 +66,13 @@ public class Client extends AbstractClient {
       return;
     }
     init();
+//    try {
+//      UpdateTool.updateTsfiles("/data1/zc_data/data1/data_zc","/data1/zc_data/data1/data_zc_update");
+//      UpdateTool.updateTsfiles("/data2/zc_data/data2/data_zc","/data2/zc_data/data2/data_zc_update");
+//      UpdateTool.updateTsfiles("/data3/zc_data/data3/data_zc","/data3/zc_data/data3/data_zc_update");
+//    } catch (IOException e) {
+//      e.printStackTrace();
+//    }
     newArgs = removePasswordArgs(args);
     newArgs2 = processExecuteArgs(newArgs);
     boolean continues = parseCommandLine(options, newArgs2, hf);

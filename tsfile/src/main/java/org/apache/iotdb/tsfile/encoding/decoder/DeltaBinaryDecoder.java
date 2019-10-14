@@ -21,6 +21,7 @@ package org.apache.iotdb.tsfile.encoding.decoder;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import org.apache.iotdb.tsfile.encoding.encoder.DeltaBinaryEncoder;
 import org.apache.iotdb.tsfile.file.metadata.enums.TSEncoding;
 import org.apache.iotdb.tsfile.utils.BytesUtils;
@@ -120,6 +121,9 @@ public abstract class DeltaBinaryDecoder extends Decoder {
      * @return int
      */
     protected int loadIntBatch(ByteBuffer buffer) {
+//      buffer.order(ByteOrder.LITTLE_ENDIAN);
+//      packNum = int2LittleEndian(ReadWriteIOUtils.readInt(buffer));
+//      packWidth = int2LittleEndian(ReadWriteIOUtils.readInt(buffer));
       packNum = ReadWriteIOUtils.readInt(buffer);
       packWidth = ReadWriteIOUtils.readInt(buffer);
       count++;
@@ -148,6 +152,20 @@ public abstract class DeltaBinaryDecoder extends Decoder {
     protected void readHeader(ByteBuffer buffer) {
       minDeltaBase = ReadWriteIOUtils.readInt(buffer);
       firstValue = ReadWriteIOUtils.readInt(buffer);
+    }
+
+    /**
+     * Reformats a Little Endian value to bigEndian
+     * @param val the value to transform
+     * @return Big Endian Value
+     */
+    private static int int2LittleEndian(int val){
+      return
+          (  ( val&0xff000000 ) >>> 24 ) +
+              ( (( val&0x00ff0000 ) >>> 16 ) << 8 ) +
+              ( (( val&0x0000ff00 ) >>>  8 ) << 16 ) +
+              ( (( val&0x000000ff )        ) << 24 )
+          ;
     }
 
     @Override
@@ -201,6 +219,9 @@ public abstract class DeltaBinaryDecoder extends Decoder {
      * @return long value
      */
     protected long loadIntBatch(ByteBuffer buffer) {
+//      buffer.order(ByteOrder.LITTLE_ENDIAN);
+//      packNum = int2LittleEndian(ReadWriteIOUtils.readInt(buffer));
+//      packWidth = int2LittleEndian(ReadWriteIOUtils.readInt(buffer));
       packNum = ReadWriteIOUtils.readInt(buffer);
       packWidth = ReadWriteIOUtils.readInt(buffer);
       count++;
@@ -235,6 +256,20 @@ public abstract class DeltaBinaryDecoder extends Decoder {
     protected void readHeader(ByteBuffer buffer) {
       minDeltaBase = ReadWriteIOUtils.readLong(buffer);
       firstValue = ReadWriteIOUtils.readLong(buffer);
+    }
+
+    /**
+     * Reformats a Little Endian value to bigEndian
+     * @param val the value to transform
+     * @return Big Endian Value
+     */
+    private static int int2LittleEndian(int val){
+      return
+          (  ( val&0xff000000 ) >>> 24 ) +
+              ( (( val&0x00ff0000 ) >>> 16 ) << 8 ) +
+              ( (( val&0x0000ff00 ) >>>  8 ) << 16 ) +
+              ( (( val&0x000000ff )        ) << 24 )
+          ;
     }
 
     @Override

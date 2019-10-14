@@ -61,6 +61,8 @@ public class TsFileMetaData {
   // another new chunk
   private int invalidChunkNum;
 
+
+
   public TsFileMetaData() {
     //do nothing
   }

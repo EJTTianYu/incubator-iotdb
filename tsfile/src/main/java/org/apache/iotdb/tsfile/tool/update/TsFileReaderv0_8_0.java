@@ -325,10 +325,10 @@ public class TsFileReaderv0_8_0 implements AutoCloseable {
       return false;
     }
 
-    if (fileSize == TSFileConfig.MAGIC_STRING.length()) {
+    if (fileSize == "TsFilev0.8.0".length()) {
       logger.error("the file only contains magic string, file path: {}", checkFile.getPath());
       return false;
-    } else if (readTailMagic().equals(magic)) {
+    } else if (readTailMagic().equals("TsFilev0.8.0")) {
       loadMetadataSize();
       TsFileMetaData tsFileMetaData = readFileMetadata();
       schema = new Schema(tsFileMetaData.getMeasurementSchema());
@@ -338,7 +338,7 @@ public class TsFileReaderv0_8_0 implements AutoCloseable {
     long endTimeOfChunk = 0;
     long numOfPoints = 0;
     ChunkMetaData currentChunkMetaData;
-    List<ChunkMetaData> chunks = null;
+    List<ChunkMetaData> chunkMetaDataList = null;
     long startOffsetOfChunkGroup = 0;
     boolean newChunkGroup = true;
     long versionOfChunkGroup = 0;
@@ -354,7 +354,7 @@ public class TsFileReaderv0_8_0 implements AutoCloseable {
             // this is the first chunk of a new ChunkGroup.
             if (newChunkGroup) {
               newChunkGroup = false;
-              chunks = new ArrayList<>();
+              chunkMetaDataList = new ArrayList<>();
               startOffsetOfChunkGroup = this.position() - 1;
             }
 
@@ -409,7 +409,7 @@ public class TsFileReaderv0_8_0 implements AutoCloseable {
             TsDigest tsDigest = new TsDigest();
             tsDigest.setStatistics(statisticsArray);
             currentChunkMetaData.setDigest(tsDigest);
-            chunks.add(currentChunkMetaData);
+            chunkMetaDataList.add(currentChunkMetaData);
             numOfPoints = 0;
             pageHeadersList.add(pageHeaders);
             pagesList.add(pages);
@@ -421,7 +421,7 @@ public class TsFileReaderv0_8_0 implements AutoCloseable {
             ChunkGroupFooter chunkGroupFooter = this.readChunkGroupFooter();
             String deviceID = chunkGroupFooter.getDeviceID();
             long endOffsetOfChunkGroup = this.position();
-            ChunkGroupMetaData currentChunkGroup = new ChunkGroupMetaData(deviceID, chunks,
+            ChunkGroupMetaData currentChunkGroup = new ChunkGroupMetaData(deviceID, chunkMetaDataList,
                 startOffsetOfChunkGroup);
             currentChunkGroup.setEndOffsetOfChunkGroup(endOffsetOfChunkGroup);
             currentChunkGroup.setVersion(versionOfChunkGroup++);
@@ -429,20 +429,19 @@ public class TsFileReaderv0_8_0 implements AutoCloseable {
             tsFileIOWriter.startChunkGroup(deviceID);
             for (int i = 0; i < chunkHeaders.size(); i++) {
               ChunkHeader chunkHeader = chunkHeaders.get(i);
-              ChunkMetaData chunkMetaData = chunks.get(i);
-              tsFileIOWriter
-                  .startFlushChunk(schema.getMeasurementSchema(chunkHeader.getMeasurementID()),
-                      chunkHeader.getCompressionType(), chunkHeader.getDataType(),
-                      chunkHeader.getEncodingType(),
-                      chunkStatisticsList.get(i), chunkMetaData.getEndTime(),
-                      chunkMetaData.getStartTime(), chunkHeader.getDataSize(),
-                      chunkHeader.getNumOfPages());
               List<PageHeader> pageHeaderList = pageHeadersList.get(i);
               List<ByteBuffer> pageList = pagesList.get(i);
 
+              try {
+                new ChunkBuffer(schema.getMeasurementSchema(chunkHeader.getMeasurementID()));
+              } catch (Exception e) {
+                //break;
+                continue;
+              }
               ChunkBuffer chunkBuffer = new ChunkBuffer(
                   schema.getMeasurementSchema(chunkHeader.getMeasurementID()));
               for (int j = 0; j < pageHeaderList.size(); j++) {
+//                pageList.set(j, rewrite(pageList.get(j)));
                 chunkBuffer.writePageHeaderAndDataIntoBuff(pageList.get(j), pageHeaderList.get(j));
               }
               chunkBuffer.writeAllPagesOfSeriesToTsFile(tsFileIOWriter, chunkStatisticsList.get(i));
