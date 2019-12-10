@@ -34,6 +34,7 @@ import org.apache.iotdb.db.metadata.MManager;
 import org.apache.iotdb.db.monitor.StatMonitor;
 import org.apache.iotdb.db.rescon.TVListAllocator;
 import org.apache.iotdb.db.sync.receiver.SyncServerManager;
+import org.apache.iotdb.db.tools.warmingUp.WarmingUp;
 import org.apache.iotdb.db.writelog.manager.MultiFileLogNodeManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +75,8 @@ public class IoTDB implements IoTDBMBean {
       return;
     }
     logger.info("{} has started.", IoTDBConstant.GLOBAL_DB_NAME);
+
+    WarmingUp.getInstance().submitWarming();
   }
 
   private void setUp() throws StartupException {

@@ -160,7 +160,7 @@ table td[class*="span"],table th[class*="span"],.row-fluid table td[class*="span
 
 .navbar {  font-size: 15px;  margin-bottom: 15px;  min-width: 600px;}
 .navbar .brand {  margin-right: 20px;  margin-bottom: 0;  margin-top: 0;  margin-left: 10px;  padding: 0;}
-.navbar .nav > li {  height: 50px;0px;}
+.navbar .nav > li {  height: 50px;}
 .navbar .nav > li a {  height: 30px;  line-height: 2;}
 .navbar-text {  height: 50px;  line-height: 3.3;  white-space: nowrap;}table.sortable thead {  cursor: pointer;}
 table.sortable td {  word-wrap: break-word;  max-width: 600px;  font-size: 14px;}
