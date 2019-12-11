@@ -334,6 +334,8 @@ public class IoTDBDescriptor {
       conf.setDefaultTTL(Long.parseLong(properties.getProperty("default_ttl",
           String.valueOf(conf.getDefaultTTL()))));
 
+      conf.setWarmingUp(properties.getProperty("warming_up", conf.getWarmingUp()));
+
       // At the same time, set TSFileConfig
       TSFileDescriptor.getInstance().getConfig()
           .setTSFileStorageFs(properties.getProperty("tsfile_storage_fs"));

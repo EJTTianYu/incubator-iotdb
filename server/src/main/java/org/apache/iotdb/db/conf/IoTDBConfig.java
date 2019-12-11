@@ -342,6 +342,11 @@ public class IoTDBConfig {
   private int upgradeThreadNum = 1;
 
   /**
+   * Warming up method to speed up query
+   */
+  private String warmingUp = "first";
+
+  /**
    * How many threads will be set up to perform main merge tasks.
    */
   private int mergeThreadNum = 1;
@@ -1269,5 +1274,13 @@ public class IoTDBConfig {
 
   public void setDefaultTTL(long defaultTTL) {
     this.defaultTTL = defaultTTL;
+  }
+
+  public String getWarmingUp() {
+    return warmingUp;
+  }
+
+  public void setWarmingUp(String warmingUp) {
+    this.warmingUp = warmingUp;
   }
 }

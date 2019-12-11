@@ -21,6 +21,8 @@ package org.apache.iotdb.db.tools.warmingUp;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -64,11 +66,30 @@ public class WarmingUp {
 
     @Override
     public void run() {
-      try {
-        Statement statement = connection.createStatement();
-        statement.execute("select first(*) from root group by device");
+      try (Statement statement = connection.createStatement()){
+        ResultSet resultSet = null;
+        boolean hasResultSet;
+        if (ioTDBConfig.getWarmingUp().equals("first")) {
+          hasResultSet = statement.execute("select first(*) from root group by device");
+        } else {
+          hasResultSet = statement.execute("select last(*) from root group by device");
+        }
+        if (hasResultSet) {
+          resultSet = statement.getResultSet();
+          while (resultSet.next()){
+            // pass
+          }
+        }
       } catch (Exception e) {
         LOGGER.error("warming up failed", e);
+      } finally {
+        if (connection!=null){
+          try {
+            connection.close();
+          } catch (SQLException e) {
+            LOGGER.error("close connection error during warming up operation", e);
+          }
+        }
       }
     }
   }
