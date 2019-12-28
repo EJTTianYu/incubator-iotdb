@@ -66,24 +66,36 @@ public class WarmingUp {
 
     @Override
     public void run() {
-      try (Statement statement = connection.createStatement()){
+      try (Statement statement = connection.createStatement()) {
         ResultSet resultSet = null;
+        boolean hasTimeseries;
         boolean hasResultSet;
-        if (ioTDBConfig.getWarmingUp().equals("first")) {
-          hasResultSet = statement.execute("select first(*) from root group by device");
-        } else {
-          hasResultSet = statement.execute("select last(*) from root group by device");
-        }
-        if (hasResultSet) {
+
+        hasTimeseries = statement.execute("count timeseries root");
+        if (hasTimeseries) {
           resultSet = statement.getResultSet();
-          while (resultSet.next()){
-            // pass
+          if (resultSet.next()) {
+            hasTimeseries = !resultSet.getString(1).equals("0");
           }
         }
+        if (hasTimeseries) {
+          if (ioTDBConfig.getWarmingUp().equals("first")) {
+            hasResultSet = statement.execute("select first(*) from root group by device");
+          } else {
+            hasResultSet = statement.execute("select last(*) from root group by device");
+          }
+          if (hasResultSet) {
+            resultSet = statement.getResultSet();
+            while (resultSet.next()) {
+              // pass
+            }
+          }
+        }
+        LOGGER.info("warming up finished");
       } catch (Exception e) {
-        LOGGER.error("warming up failed", e);
+        LOGGER.warn("warming up failed", e.getMessage());
       } finally {
-        if (connection!=null){
+        if (connection != null) {
           try {
             connection.close();
           } catch (SQLException e) {
