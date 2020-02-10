@@ -63,7 +63,7 @@ public class RocketMQProducer {
         return mqs.get(index);
       }, Utils
           .ConvertStringToInteger(Utils.getTimeSeries(sql)));
-      logger.debug(sendResult.toString());
+      logger.info(sendResult.toString());
     }
   }
 

@@ -40,7 +40,7 @@ public class RegisterManager {
   public void register(IService service) throws StartupException {
     for (IService s : iServices) {
       if (s.getID() == service.getID()) {
-        logger.debug("{} has already been registered. skip", service.getID().getName());
+        logger.info("{} has already been registered. skip", service.getID().getName());
         return;
       }
     }
@@ -62,6 +62,6 @@ public class RegisterManager {
       }
     }
     iServices.clear();
-    logger.debug("deregister all service.");
+    logger.info("deregister all service.");
   }
 }

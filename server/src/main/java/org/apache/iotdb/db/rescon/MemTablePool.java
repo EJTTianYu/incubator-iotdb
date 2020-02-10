@@ -50,7 +50,7 @@ public class MemTablePool {
     synchronized (availableMemTables) {
       if (availableMemTables.isEmpty() && size < CONFIG.getMaxMemtableNumber()) {
         size++;
-        logger.debug("generated a new memtable for {}, system memtable size: {}, stack size: {}",
+        logger.info("generated a new memtable for {}, system memtable size: {}, stack size: {}",
             applier, size, availableMemTables.size());
         return new PrimitiveMemTable();
       } else if (!availableMemTables.isEmpty()) {
@@ -76,7 +76,7 @@ public class MemTablePool {
           logger.error("{} fails to wait fot memtables {}, continue to wait", applier, e);
           Thread.currentThread().interrupt();
         }
-        logger.debug("{} has waited for a memtable for {}ms", applier, waitCount++ * WAIT_TIME);
+        logger.info("{} has waited for a memtable for {}ms", applier, waitCount++ * WAIT_TIME);
       }
     }
   }

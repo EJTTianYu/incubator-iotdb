@@ -258,7 +258,7 @@ public class StorageGroupProcessor {
     }
 
     private void recover() throws StorageGroupProcessorException {
-        logger.debug("recover Storage Group {}", storageGroupName);
+        logger.info("recover Storage Group {}", storageGroupName);
 
         try {
             // collect TsFiles from sequential and unsequential data directory

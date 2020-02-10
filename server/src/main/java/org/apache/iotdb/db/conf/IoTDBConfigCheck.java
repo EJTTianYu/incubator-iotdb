@@ -66,14 +66,14 @@ public class IoTDBConfigCheck {
 
     createDir(SCHEMA_DIR);
     checkFile(SCHEMA_DIR);
-    logger.debug("System configuration is ok.");
+    logger.info("System configuration is ok.");
   }
 
   private void createDir(String filepath) {
     File dir = SystemFileFactory.INSTANCE.getFile(filepath);
     if (!dir.exists()) {
       dir.mkdirs();
-      logger.debug(" {} dir has been created.", SCHEMA_DIR);
+      logger.info(" {} dir has been created.", SCHEMA_DIR);
     }
   }
 
@@ -85,7 +85,7 @@ public class IoTDBConfigCheck {
     try {
       if (!file.exists()) {
         file.createNewFile();
-        logger.debug(" {} has been created.", file.getAbsolutePath());
+        logger.info(" {} has been created.", file.getAbsolutePath());
         try (FileOutputStream outputStream = new FileOutputStream(file.toString())) {
           properties.setProperty("timestamp_precision", TIMESTAMP_PRECISION);
           properties.setProperty("storage_group_time_range", String.valueOf(PARTITION_INTERVAL));

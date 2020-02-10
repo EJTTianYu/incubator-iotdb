@@ -80,7 +80,8 @@ public abstract class MergeTest {
     prepareSeries();
     prepareFiles(seqFileNum, unseqFileNum);
     MergeManager.getINSTANCE().start();
-    ChunkProviderExecutor.getINSTANCE().start();
+    //TODO: this code maybe have been deleted
+//    ChunkProviderExecutor.getINSTANCE().start();
   }
 
   @After
@@ -94,7 +95,8 @@ public abstract class MergeTest {
     MManager.getInstance().clear();
     EnvironmentUtils.cleanAllDir();
     MergeManager.getINSTANCE().stop();
-    ChunkProviderExecutor.getINSTANCE().close();
+    //TODO: this code maybe have been deleted
+//    ChunkProviderExecutor.getINSTANCE().close();
   }
 
   private void prepareSeries() throws MetadataException, PathException {

@@ -84,7 +84,7 @@ public class SyncServerManager implements IService {
     syncServerThread = new SyncServiceThread();
     syncServerThread.setName(ThreadName.SYNC_SERVER.getName());
     syncServerThread.start();
-    logger.debug("Sync server has started.");
+    logger.info("Sync server has started.");
   }
 
   /**
@@ -146,7 +146,7 @@ public class SyncServerManager implements IService {
         logger.error("{}: {} exit, because ", IoTDBConstant.GLOBAL_DB_NAME, getID().getName(), e);
       } finally {
         close();
-        logger.debug("{}: close TThreadPoolServer and TServerSocket for {}",
+        logger.info("{}: close TThreadPoolServer and TServerSocket for {}",
             IoTDBConstant.GLOBAL_DB_NAME, getID().getName());
       }
     }
