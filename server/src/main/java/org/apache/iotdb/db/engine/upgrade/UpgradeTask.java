@@ -71,7 +71,7 @@ public class UpgradeTask implements Runnable {
         upgradeResource.getWriteQueryLock().writeLock().unlock();
       }
       UpgradeSevice.setCntUpgradeFileNum(UpgradeSevice.getCntUpgradeFileNum() - 1);
-      logger.debug("Upgrade completes, file path:{} , the remaining upgraded file num: {}",
+      logger.info("Upgrade completes, file path:{} , the remaining upgraded file num: {}",
           tsfilePathBefore, UpgradeSevice.getCntUpgradeFileNum());
     } catch (Exception e) {
       logger.error("meet error when upgrade file:{}", upgradeResource.getFile().getAbsolutePath(),

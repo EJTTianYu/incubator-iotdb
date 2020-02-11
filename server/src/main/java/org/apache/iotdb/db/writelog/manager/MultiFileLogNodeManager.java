@@ -52,7 +52,7 @@ public class MultiFileLogNodeManager implements WriteLogNodeManager, IService {
           return;
         }
         if (Thread.interrupted()) {
-          logger.debug("WAL force thread exits.");
+          logger.info("WAL force thread exits.");
           return;
         }
 
@@ -66,7 +66,7 @@ public class MultiFileLogNodeManager implements WriteLogNodeManager, IService {
         try {
           Thread.sleep(config.getForceWalPeriodInMs());
         } catch (InterruptedException e) {
-          logger.debug("WAL force thread exits.");
+          logger.info("WAL force thread exits.");
           Thread.currentThread().interrupt();
           break;
         }
@@ -109,15 +109,15 @@ public class MultiFileLogNodeManager implements WriteLogNodeManager, IService {
       logger.warn("MultiFileLogNodeManager has not yet started");
       return;
     }
-    logger.debug("LogNodeManager starts closing..");
+    logger.info("LogNodeManager starts closing..");
     if (isActivated(forceThread)) {
       forceThread.interrupt();
-      logger.debug("Waiting for force thread to stop");
+      logger.info("Waiting for force thread to stop");
       while (forceThread.isAlive()) {
         // wait for forceThread
       }
     }
-    logger.debug("{} nodes to be closed", nodeMap.size());
+    logger.info("{} nodes to be closed", nodeMap.size());
     for (WriteLogNode node : nodeMap.values()) {
       try {
         node.close();
@@ -126,7 +126,7 @@ public class MultiFileLogNodeManager implements WriteLogNodeManager, IService {
       }
     }
     nodeMap.clear();
-    logger.debug("LogNodeManager closed.");
+    logger.info("LogNodeManager closed.");
   }
 
   @Override

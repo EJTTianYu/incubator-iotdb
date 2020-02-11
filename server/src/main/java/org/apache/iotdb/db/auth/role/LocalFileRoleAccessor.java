@@ -165,7 +165,7 @@ public class LocalFileRoleAccessor implements IRoleAccessor {
   @Override
   public void reset() {
     if (SystemFileFactory.INSTANCE.getFile(roleDirPath).mkdirs()) {
-      logger.debug("role info dir {} is created", roleDirPath);
+      logger.info("role info dir {} is created", roleDirPath);
     } else if (!SystemFileFactory.INSTANCE.getFile(roleDirPath).exists()) {
       logger.error("role info dir {} can not be created", roleDirPath);
     }

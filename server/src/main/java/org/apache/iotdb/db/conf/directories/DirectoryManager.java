@@ -88,7 +88,7 @@ public class DirectoryManager {
       unsequenceStrategy.setFolders(unsequenceFileFolders);
       this.sequenceFileFolders = sequenceFileFolders;
       this.unsequenceFileFolders = unsequenceFileFolders;
-      logger.debug("Success to update file folders.");
+      logger.info("Success to update file folders.");
     } catch (DiskSpaceInsufficientException e) {
       logger.error(
           "Fail to update file folders, use previous folders.", e);
@@ -106,7 +106,7 @@ public class DirectoryManager {
       sequenceStrategy.setFolders(sequenceFileFolders);
       unsequenceStrategy = (DirectoryStrategy) clazz.newInstance();
       unsequenceStrategy.setFolders(unsequenceFileFolders);
-      logger.debug("Success to update directory strategy.");
+      logger.info("Success to update directory strategy.");
     } catch (Exception e) {
       logger.error("Fail to update directory strategy {}, use previous strategy", strategyName, e);
       throw new LoadConfigurationException(String.format(
@@ -123,9 +123,9 @@ public class DirectoryManager {
     for (String folder : folders) {
       File file = FSFactoryProducer.getFSFactory().getFile(folder);
       if (file.mkdirs()) {
-        logger.debug("folder {} doesn't exist, create it", file.getPath());
+        logger.info("folder {} doesn't exist, create it", file.getPath());
       } else {
-        logger.debug("create folder {} failed. Is the folder existed: {}", file.getPath(),
+        logger.info("create folder {} failed. Is the folder existed: {}", file.getPath(),
             file.exists());
       }
     }

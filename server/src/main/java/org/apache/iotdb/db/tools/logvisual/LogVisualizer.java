@@ -269,7 +269,7 @@ public class LogVisualizer {
     } catch (IOException e) {
       throw new VisualizationException(e);
     }
-    logger.debug("Collected {} logs from {}", logCache.size(), logFile.getPath());
+    logger.info("Collected {} logs from {}", logCache.size(), logFile.getPath());
     return logCache;
   }
 
@@ -280,7 +280,7 @@ public class LogVisualizer {
     }
     logCache.clear();
     groupNum = logGroups.size();
-    logger.debug("Found {} different tags", groupNum);
+    logger.info("Found {} different tags", groupNum);
     return logGroups;
   }
 

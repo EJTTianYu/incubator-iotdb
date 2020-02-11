@@ -66,12 +66,12 @@ public class UpgradeSevice implements IService {
     UpgradeLog.closeLogWriter();
     if (upgradeThreadPool != null) {
       upgradeThreadPool.shutdownNow();
-      logger.debug("Waiting for upgrade task pool to shut down");
+      logger.info("Waiting for upgrade task pool to shut down");
       while (!upgradeThreadPool.isTerminated()) {
         // wait
       }
       upgradeThreadPool = null;
-      logger.debug("Upgrade service stopped");
+      logger.info("Upgrade service stopped");
     }
   }
 
@@ -105,7 +105,7 @@ public class UpgradeSevice implements IService {
 
   private static void countUpgradeFiles() {
     cntUpgradeFileNum = StorageEngine.getInstance().countUpgradeFiles();
-    logger.debug("finish counting upgrading files, total num:{}", cntUpgradeFileNum);
+    logger.info("finish counting upgrading files, total num:{}", cntUpgradeFileNum);
   }
 
   private static void upgradeAll() {

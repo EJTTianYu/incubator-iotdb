@@ -95,7 +95,6 @@ public class MManager {
     if (!systemFolder.exists()) {
       if (systemFolder.mkdirs()) {
         logger.info("create system folder {}", systemFolder.getAbsolutePath());
-        logger.info("create system folder {}", systemFolder.getAbsolutePath());
       } else {
         logger.info("create system folder {} failed.", systemFolder.getAbsolutePath());
       }

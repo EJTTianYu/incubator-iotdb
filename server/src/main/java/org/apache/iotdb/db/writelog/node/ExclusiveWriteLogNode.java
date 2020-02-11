@@ -75,7 +75,7 @@ public class ExclusiveWriteLogNode implements WriteLogNode, Comparable<Exclusive
     this.logDirectory =
         DirectoryManager.getInstance().getWALFolder() + File.separator + this.identifier;
     if (SystemFileFactory.INSTANCE.getFile(logDirectory).mkdirs()) {
-      logger.debug("create the WAL folder {}." + logDirectory);
+      logger.info("create the WAL folder {}." + logDirectory);
     }
   }
 
@@ -99,7 +99,7 @@ public class ExclusiveWriteLogNode implements WriteLogNode, Comparable<Exclusive
     try {
       plan.serializeTo(logBuffer);
     } catch (BufferOverflowException e) {
-      logger.debug("WAL BufferOverflow !");
+      logger.info("WAL BufferOverflow !");
       logBuffer.reset();
       sync();
       plan.serializeTo(logBuffer);
@@ -186,11 +186,11 @@ public class ExclusiveWriteLogNode implements WriteLogNode, Comparable<Exclusive
 
   private void discard(File logFile) {
     if (!logFile.exists()) {
-      logger.debug("Log file does not exist");
+      logger.info("Log file does not exist");
     } else {
       try {
         FileUtils.forceDelete(logFile);
-        logger.debug("Log node {} cleaned old file", identifier);
+        logger.info("Log node {} cleaned old file", identifier);
       } catch (IOException e) {
         logger.error("Old log file {} of {} cannot be deleted", logFile.getName(), identifier, e);
       }
@@ -244,7 +244,7 @@ public class ExclusiveWriteLogNode implements WriteLogNode, Comparable<Exclusive
     fileId++;
     File newFile = SystemFileFactory.INSTANCE.getFile(logDirectory, WAL_FILE_NAME + fileId);
     if (newFile.getParentFile().mkdirs()) {
-      logger.debug("create WAL parent folder {}.", newFile.getParent());
+      logger.info("create WAL parent folder {}.", newFile.getParent());
     }
     currentFileWriter = new LogWriter(newFile);
   }
